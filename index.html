@@ -1,1 +1,203 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Chaise Minecraft</title>
+<style>
+  body {
+    background: #121212;
+    color: white;
+    font-family: Arial, sans-serif;
+    margin: 0; padding: 0;
+    user-select: none;
+  }
+  header {
+    background: #222;
+    padding: 20px;
+    text-align: center;
+  }
+  header h1 {
+    margin: 0;
+    font-size: 3rem;
+    color: #4caf50;
+  }
+  header p {
+    margin: 5px 0 15px;
+    font-size: 1.1rem;
+    color: #ccc;
+  }
+  nav {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+  }
+  nav button {
+    background-color: #4caf50;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    border-radius: 10px;
+    cursor: pointer;
+    color: white;
+    transition: background-color 0.3s ease;
+  }
+  nav button:hover {
+    background-color: #3a923a;
+  }
+  main {
+    max-width: 700px;
+    margin: 30px auto;
+    padding: 0 20px;
+  }
+  /* Store items */
+  .store-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #222;
+    padding: 15px 20px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+  }
+  .store-item span.name {
+    font-size: 1.3rem;
+  }
+  .store-item span.price {
+    color: #4caf50;
+    font-weight: bold;
+    margin-left: 10px;
+  }
+  .store-item button {
+    background: #3a923a;
+    border: none;
+    padding: 8px 16px;
+    font-size: 1rem;
+    border-radius: 7px;
+    cursor: pointer;
+    color: white;
+  }
+  .store-item button:hover {
+    background: #2a6e2a;
+  }
+  /* Payment area */
+  #paymentArea {
+    background: #222;
+    padding: 20px;
+    border-radius: 12px;
+    margin-top: 30px;
+    text-align: center;
+    display: none;
+  }
+  #paymentArea h3 {
+    color: #4caf50;
+    margin-bottom: 10px;
+  }
+  .code-container {
+    display: inline-flex;
+    align-items: center;
+    gap: 15px;
+    background: #333;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-family: monospace;
+    font-size: 1.2rem;
+    user-select: all;
+  }
+  .copy-btn {
+    background: #4caf50;
+    border: none;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 7px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .copy-btn:hover {
+    background: #3a923a;
+  }
+  #copyMessage {
+    margin-top: 12px;
+    color: #4caf50;
+    font-weight: bold;
+    display: none;
+    user-select: none;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Chaise Minecraft</h1>
+  <p>Alătură-te comunității noastre! IP: <strong>chaise.falixsvr.me</strong></p>
+  <nav>
+    <button id="btnStore">Store</button>
+    <button id="btnDiscord" onclick="window.open('https://discord.gg/LINK-DISCORD', '_blank')">Discord</button>
+  </nav>
+</header>
+
+<main id="mainContent">
+  <h2>Bine ai venit la Chaise!</h2>
+  <p>Joacă pe serverul nostru de Minecraft și accesează magazinul pentru iteme exclusive.</p>
+</main>
+
+<script>
+  const btnStore = document.getElementById('btnStore');
+  const mainContent = document.getElementById('mainContent');
+
+  // Produsele din store
+  const products = [
+    { name: "Pistol", price: 2 },
+    { name: "Sniper", price: 5 },
+    { name: "Assault Rifle", price: 3 }
+  ];
+
+  // Codul PaySafeCard
+  const psfCode = "525647236879";
+
+  // Construiește lista de produse
+  function renderStore() {
+    let html = '<h2>Magazin Chaise</h2>';
+    products.forEach((p, i) => {
+      html += `
+      <div class="store-item">
+        <span class="name">${p.name}</span>
+        <span class="price">${p.price} Lei</span>
+        <button onclick="buyItem(${i})">Cumpără</button>
+      </div>`;
+    });
+    html += `<div id="paymentArea">
+      <h3>Plata prin PaySafeCard</h3>
+      <div class="code-container">
+        <span id="psfCode">${psfCode}</span>
+        <button class="copy-btn" onclick="copyCode()">Copiere cod</button>
+      </div>
+      <div id="copyMessage">Cod copiat în clipboard!</div>
+    </div>`;
+    mainContent.innerHTML = html;
+  }
+
+  // Cumpără un item (arata plata)
+  function buyItem(index) {
+    renderStore(); // arata toate produsele + plata
+    document.getElementById('paymentArea').style.display = 'block';
+  }
+
+  // Copiază codul în clipboard
+  function copyCode() {
+    const codeText = document.getElementById('psfCode').textContent;
+    navigator.clipboard.writeText(codeText).then(() => {
+      const msg = document.getElementById('copyMessage');
+      msg.style.display = 'block';
+      setTimeout(() => { msg.style.display = 'none'; }, 2000);
+    });
+  }
+
+  btnStore.addEventListener('click', () => {
+    renderStore();
+  });
+</script>
+
+</body>
+</html>
 
