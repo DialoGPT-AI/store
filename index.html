@@ -10,37 +10,51 @@
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: #121212;
       color: #eee;
+      text-align: center; /* Centrare titlu si continut */
     }
     header {
       background: #222;
-      padding: 20px 30px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      padding: 40px 20px 20px 20px;
+      user-select: none;
     }
     header h1 {
       margin: 0;
+      font-size: 48px;
       color: #4caf50;
-      user-select: none;
     }
-    nav button {
-      background: #4caf50;
-      border: none;
-      padding: 10px 20px;
-      margin-left: 10px;
+    header p.description {
+      margin-top: 10px;
+      font-size: 18px;
+      color: #ccc;
+    }
+    /* Butoane mari sub titlu */
+    .top-buttons {
+      margin-top: 30px;
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+    }
+    .btn {
+      background-color: #4caf50;
       color: white;
-      font-size: 16px;
+      padding: 18px 40px;
+      font-size: 20px;
+      border: none;
+      border-radius: 10px;
       cursor: pointer;
-      border-radius: 5px;
-      transition: background 0.3s;
+      text-decoration: none;
+      user-select: none;
+      transition: background-color 0.3s;
     }
-    nav button:hover {
-      background: #45a049;
+    .btn:hover {
+      background-color: #45a049;
     }
+
     main {
-      padding: 30px;
       max-width: 700px;
-      margin: auto;
+      margin: 40px auto 20px auto;
+      padding: 0 20px;
+      text-align: left; /* pentru continutul main */
     }
     /* Login icon */
     #loginIcon {
@@ -49,6 +63,10 @@
       height: 30px;
       fill: #4caf50;
       transition: fill 0.3s;
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      user-select: none;
     }
     #loginIcon:hover {
       fill: #45a049;
@@ -66,6 +84,7 @@
       width: 260px;
       color: #eee;
       z-index: 100;
+      user-select: none;
     }
     #loginForm input {
       width: 100%;
@@ -73,6 +92,7 @@
       margin: 8px 0;
       border: none;
       border-radius: 5px;
+      font-size: 16px;
     }
     #loginForm button {
       width: 100%;
@@ -83,6 +103,7 @@
       font-size: 16px;
       border-radius: 5px;
       cursor: pointer;
+      user-select: none;
     }
     #loginForm button:hover {
       background: #45a049;
@@ -116,13 +137,11 @@
 
 <header>
   <h1>Chaise Minecraft</h1>
-  <nav>
-    <button id="btnHome">Acasă</button>
-    <button id="btnStore">Store</button>
-    <svg id="loginIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-      <path d="M12 12c2.7 0 4.9-2.2 4.9-4.9S14.7 2.2 12 2.2 7.1 4.4 7.1 7.1 9.3 12 12 12zm0 2.5c-3.3 0-9.9 1.7-9.9 5v2.3h19.8v-2.3c0-3.3-6.6-5-9.9-5z"/>
-    </svg>
-  </nav>
+  <p class="description">Alătură-te celei mai tari comunități Minecraft din România.<br>IP Server: <strong>chaise.falixsvr.me</strong></p>
+  <div class="top-buttons">
+    <button id="btnStore" class="btn">Store</button>
+    <a href="https://discord.gg/LINK-DISCORD" target="_blank" class="btn">Discord</a>
+  </div>
 </header>
 
 <main id="content">
@@ -141,8 +160,12 @@
   <button id="btnLogout" style="margin-top: 10px; background: #c44343; display:none;">Deconectare</button>
 </div>
 
+<!-- Icon login fixat sus dreapta -->
+<svg id="loginIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <path d="M12 12c2.7 0 4.9-2.2 4.9-4.9S14.7 2.2 12 2.2 7.1 4.4 7.1 7.1 9.3 12 12 12zm0 2.5c-3.3 0-9.9 1.7-9.9 5v2.3h19.8v-2.3c0-3.3-6.6-5-9.9-5z"/>
+</svg>
+
 <script>
-  const btnHome = document.getElementById('btnHome');
   const btnStore = document.getElementById('btnStore');
   const content = document.getElementById('content');
   const loginIcon = document.getElementById('loginIcon');
@@ -152,7 +175,7 @@
   const emailInput = document.getElementById('emailInput');
   const passwordInput = document.getElementById('passwordInput');
 
-  // Simplu sistem de useri - stocare localStorage
+  // Sistem simplu stocare user localStorage
   function getUser() {
     return JSON.parse(localStorage.getItem('chaiseUser'));
   }
@@ -188,10 +211,11 @@
     `;
   }
 
-  // Toggle login form visibility
+  // Toggle afisare formular login
   loginIcon.addEventListener('click', () => {
-    loginForm.style.display = loginForm.style.display === 'block' ? 'none' : 'block';
     if(loginForm.style.display === 'block') {
+      loginForm.style.display = 'none';
+    } else {
       const user = getUser();
       if(user) {
         emailInput.value = user.email;
@@ -204,10 +228,11 @@
         btnLogin.style.display = 'block';
         btnLogout.style.display = 'none';
       }
+      loginForm.style.display = 'block';
     }
   });
 
-  // Login logic (stocare local, fara verificare reala)
+  // Login
   btnLogin.addEventListener('click', () => {
     const email = emailInput.value.trim();
     const password = passwordInput.value.trim();
@@ -229,15 +254,12 @@
     renderHome();
   });
 
-  // Butoane Home / Store
-  btnHome.addEventListener('click', () => {
-    renderHome();
-  });
+  // Click pe Store
   btnStore.addEventListener('click', () => {
     renderStore();
   });
 
-  // La încărcare, arată home
+  // La încărcare, afișează pagina home
   renderHome();
 </script>
 
